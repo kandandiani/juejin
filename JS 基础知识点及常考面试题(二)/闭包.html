@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>闭包的讲解</title>
+</head>
+
+<body>
+  <p>闭包的概念：函数 A 内部有一个函数 B，函数 B 可以访问到函数 A 中的变量，那么函数 B 就是闭包。</p>
+  <pre>
+    function A() {
+      let a = 1
+      return{
+      B:function () {
+          console.log(a)
+      }
+      }
+    }
+    A().B();
+  </pre>
+  <p>经典面试题</p>
+  <p>问题：</p>
+  <pre>
+    for (var i = 1; i <= 5; i++) {
+      setTimeout(function timer() {
+        console.log(i)
+      }, i * 1000)
+    }
+    // 66666
+  </pre>
+  <p>解决方法：</p>
+  <pre>
+    for (let i = 1; i <= 5; i++) {
+      setTimeout(function timer() {
+        console.log(i)
+      }, i * 1000)
+    }
+    // 12345
+  </pre>
+  <script>
+    function A() {
+      let a = 1
+      return {
+        B: function () {
+          console.log(a)
+        }
+      }
+    }
+    A().B();
+  </script>
+</body>
+
+</html>

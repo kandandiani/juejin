@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>深浅拷贝</title>
+  <style>
+    span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <p>对象类型赋值问题</p>
+  <pre>
+    let a = {
+      age: 1
+    }
+    let b = a;
+    a.age = 2;
+    console.log(b) // --->b : { age : 2 }
+  </pre>
+  <p>项目中有很多情况都不可以让b对象跟着a的变化而变化</p>
+  <p>解决方案：</p>
+  <p>浅拷贝：</p>
+  <pre>
+    <span>No.1</span>
+    let a = {
+      age: 1
+    }
+    let b = Object.assign({}, a);
+    a.age = 2;
+    console.log(b) // --->b : { age : 1 }
+  </pre>
+  <pre>
+    <span>No.2</span>
+    let a = {
+      age: 1
+    }
+    let b = {...a};
+    a.age = 2;
+    console.log(b) // --->b : { age : 1 }
+  </pre>
+  <p>第三种情况（浅拷贝不满足）</p>
+  <pre>
+    let a = {
+      age: 1,
+      jobs: {
+        first: 'FE'
+      }
+    }
+    let b = { ...a }
+    a.jobs.first = 'native'
+    console.log(b.jobs.first) // native
+  </pre>
+  <p>浅拷贝只解决了第一层的问题，如果接下去的值中还有对象的话，那么就又回到最开始的话题了，
+    两者享有相同的地址。要解决这个问题，我们就得使用深拷贝了</p>
+  <p>解决方案：</p>
+  <p>深拷贝：</p>
+  <pre>
+    <span>最常见的方法</span>
+    let a = {
+      age: 1,
+      jobs: {
+        first: 'FE'
+      }
+    }
+    let b = JSON.parse(JSON.stringify(a))
+    a.jobs.first = 'native'
+    console.log(b.jobs.first) // FE
+    该方法也是有局限性的：
+    会忽略 undefined
+    会忽略 symbol
+    不能序列化函数
+    不能解决循环引用的对象
+  </pre>
+  <pre>
+    <span>推荐方法：lodash 的深拷贝函数</span>
+
+  </pre>
+  <script>
+    function deepClone(obj) {
+      function isObject(o) {
+        return (typeof o === 'object' || typeof o === 'function') && 0 !== null;
+      }
+      if (!isObject(obj)) {
+        throw new Error('非对象');
+      }
+      let isArray = Array.isArray(obj);
+      let newObj = isArray ? [...obj] : {
+        ...obj
+      };
+    }
+  </script>
+</body>
+
+</html>
